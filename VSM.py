@@ -10,6 +10,9 @@ from parsing import get_doc_key
 from parsing import get_doc_val
 from parsing import get_map
 from parsing import get_termInfo
+from read_index import getTermID
+from read_index import getDocID
+# from read_index import checkForItem
 
 term_key_list = get_term_key()
 term_val_list = get_term_val()
@@ -41,7 +44,10 @@ for line in lines:
     word_list = [i for i in word_list if i not in stopwords] # Source of this line: https://www.techiedelight.com/remove-all-occurrences-item-list-python/
     queryDict[word_list[0]] = word_list[1:]
 
-for query in queryDict:
-
+# for query in queryDict:
+# getTermID("celluloid")
+getDocID("AP890101-0128")
+# print(doc_val_list[0])
+checkForItem("ap890101", "Document")
 # print(main_val_list[0])
-print(map)
+# print(map)

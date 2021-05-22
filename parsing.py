@@ -21,7 +21,7 @@ with zipfile.ZipFile("ap89_collection_small.zip", 'r') as zip_ref:
 # Retrieve the names of all files to be indexed in folder ./ap89_collection_small of the current directory
 for dir_path, dir_names, file_names in os.walk("ap89_collection_small"):
     allfiles = [os.path.join(dir_path, filename).replace("\\", "/") for filename in file_names if (filename != "readme" and filename != ".DS_Store")]
-    
+allfiles = allfiles[0:1]
 for file in allfiles:
     with open(file, 'r', encoding='ISO-8859-1') as f:
         filedata = f.read()
@@ -41,8 +41,8 @@ for file in allfiles:
             # Retrieve contents of DOCNO tag
             docno = re.findall(docno_regex, document)[0].replace("<DOCNO>", "").replace("</DOCNO>", "").strip()
             # print(docno)
-            if (docno != "AP890101-0001"): # FIXME FOR TESTING ONLY
-                continue
+            # if (docno != "AP890101-0001"): # FIXME FOR TESTING ONLY
+            #     continue
             # Retrieve contents of TEXT tag
             text = "".join(re.findall(text_regex, document))\
                       .replace("<TEXT>", "").replace("</TEXT>", "")\
