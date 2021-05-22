@@ -22,6 +22,7 @@ doc_key_list = get_doc_key()
 doc_val_list = get_doc_val()
 
 map = get_map()
+# print(map)
 
 termInfo = get_termInfo()
 
@@ -92,20 +93,33 @@ def getTermID(word):
     for term in term_val_list:
         # print(term)
         if word == term:
-            print(term_key_list[term_val_list.index(word)])
-            print(term)
+            # print(term_key_list[term_val_list.index(word)])
+            # print(term)
             return term_key_list[term_val_list.index(word)]
 
 def getDocID(document):
     for doc in doc_val_list:
         if document == doc:
-            print(doc_key_list[doc_val_list.index(document)])
-            print(doc)
+            # print(doc_key_list[doc_val_list.index(document)])
+            # print(doc)
             return doc_key_list[doc_val_list.index(document)]
 
+def getTermFromID(termID):
+    # print(len(term_key_list))
+    # print(termID)
+    return term_key_list[termID - 1]
+
 def checkForItem(docID, termID):
+    for item in map:
+        if item[1] > docID:
+            return False
+        if item[1] == docID:
+            if item[1] == termID:
+                return True
+    return False
+            # print(map[item][1])
     # for query in queryDict:
-    #     for 
+    #     for
     # for entry in map:
 
     # for term in term_val_list:

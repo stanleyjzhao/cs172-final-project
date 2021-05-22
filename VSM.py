@@ -12,7 +12,8 @@ from parsing import get_map
 from parsing import get_termInfo
 from read_index import getTermID
 from read_index import getDocID
-# from read_index import checkForItem
+from read_index import getTermFromID
+from read_index import checkForItem
 
 term_key_list = get_term_key()
 term_val_list = get_term_val()
@@ -40,14 +41,37 @@ lines = query_list.readlines()
 # Populates queryDict where key = query number and val = each word of query 
 for line in lines:
     line = re.sub("[^0-9a-zA-Z ]+", "", line)
+    line = line.lower()
     word_list = line.split()
     word_list = [i for i in word_list if i not in stopwords] # Source of this line: https://www.techiedelight.com/remove-all-occurrences-item-list-python/
     queryDict[word_list[0]] = word_list[1:]
 
-# for query in queryDict:
-# getTermID("celluloid")
-getDocID("AP890101-0128")
-# print(doc_val_list[0])
-checkForItem("ap890101", "Document")
-# print(main_val_list[0])
-# print(map)
+for query in queryDict:
+    qWeights = []
+    dWeights = []
+    # print(doc_key_list)
+    # print(queryDict[query])
+    for docNum in doc_key_list:
+        viewList = []
+        # print(docNum)
+        for word in queryDict[query]:
+            if word not in viewList:
+                viewList.append(word)
+                qWeights.append(1)
+                if checkForItem(docNum, word):
+                    dWeights.append(1)
+                else:
+                    dWeights.append(0)
+        for entry in map:
+            # print(entry[0])
+            getTermFromID(entry[0])
+            if word not in viewList:
+                viewList.append(word)
+                dWeights.append(1)
+                qWeights.append(0)
+        # print(len(viewList))
+    # print(qWeights)
+    # print(dWeights)
+    # print(len(qWeights))
+    # print(len(dWeights))
+    # exit
