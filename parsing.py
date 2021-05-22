@@ -41,8 +41,8 @@ for file in allfiles:
             # Retrieve contents of DOCNO tag
             docno = re.findall(docno_regex, document)[0].replace("<DOCNO>", "").replace("</DOCNO>", "").strip()
             # print(docno)
-            # if (docno != "AP890101-0001"): # FIXME FOR TESTING ONLY
-            #     continue
+            if (docno != "AP890101-0001"): # FIXME FOR TESTING ONLY
+                continue
             # Retrieve contents of TEXT tag
             text = "".join(re.findall(text_regex, document))\
                       .replace("<TEXT>", "").replace("</TEXT>", "")\

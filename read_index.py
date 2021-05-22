@@ -25,7 +25,7 @@ map = get_map()
 
 termInfo = get_termInfo()
 
-print(len(sys.argv))
+# print(len(sys.argv))
 if not(len(sys.argv) == 3 or len(sys.argv) == 5): 
     raise ValueError('Please provide a query, either --term TERM or --doc DOCNAME or both.')
 
