@@ -27,6 +27,7 @@ doc_val_list = get_doc_val()
 map = get_map()
 termInfo = get_termInfo()
 queryDict = {}
+cosSimDict = {}
 
 stop_file = open("stopwords.txt", "r")
 temp_stopwords = stop_file.readlines()
@@ -48,7 +49,6 @@ for line in lines:
 
 queryDict = {85: ["document", "will", "discuss", "allegations", "or", "measures", "being", "taken", "against", "corrupt", "public", "officials"]}
 for query in queryDict:
-
     # print(doc_key_list)
     # print(queryDict[query])
     for docNum in doc_key_list:
@@ -71,6 +71,8 @@ for query in queryDict:
                 viewList.append(word)
                 dWeights.append(1)
                 qWeights.append(0)
+        cosSim = cosSim(qWeights, dWeights)
+        cosSimDict[query].append(cosSim)
         # print(len(viewList))
     print(qWeights)
     print(dWeights)
