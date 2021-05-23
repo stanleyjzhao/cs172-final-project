@@ -111,12 +111,13 @@ def getTermFromID(termID):
 
 def checkForItem(docID, termID):
     for item in map:
+        # print(item[0])
         if item[1] > docID:
             return False
         if item[1] == docID:
-            print("found matching doc")
-            if item[1] == termID:
-                print("returning true")
+            # print("found matching doc")
+            if item[0] == termID:
+                # print("returning true")
                 return True
     return False
             # print(map[item][1])
