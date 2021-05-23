@@ -3,6 +3,7 @@ import re
 import os
 import zipfile
 import sys
+from math import sqrt
 from parsing import get_term_key
 from parsing import get_term_val
 from parsing import get_main_key
@@ -120,37 +121,17 @@ def checkForItem(docID, termID):
                 # print("returning true")
                 return True
     return False
-            # print(map[item][1])
-    # for query in queryDict:
-    #     for
-    # for entry in map:
 
-    # for term in term_val_list:
-    #     if term == word:
-    #         termID = term_key_list[term_val_list.index(word)]
-    #         break
-    # print(map[0])
-    # termID = 0 
-    # docID = 0
-    # word = word.upper()
-    # print("Listing for term: ", word)
-    # print("In document: ", document)
-    # for term in term_val_list:
-    #     if(word == term):
-    #         position = term_val_list.index(term)
-    #         termID = term_key_list[position]
-    # print("TERMID: ", termID)
-    # for docname in doc_val_list:
-    #     if document == docname:
-    #         position = doc_val_list.index(docname)
-    #         docID = doc_key_list[position]
-    # print("DOCID: ", docID)
-
-    # smallList = termInfo[termID][0][2].items()
-    # newTuple = ()
-    # for key,freq in smallList:
-    #    if key == docID:
-    #        newTuple = (key,freq)
-    # print(newTuple)
-    # If term in doc - return true
-    #else - return false
+def cosSim(qWeights, dWeights):
+    numerator = 0
+    denominator1 = 0
+    denominator2 = 0
+    for i in range(len(qWeights)):
+        numerator += qWeights[i] * dWeights[i]
+        denominator1 += (qWeights[i] ** 2)
+        denominator2 += (dWeights[i] ** 2)
+    denominator = denominator1 * denominator2
+    denominator = sqrt(denominator)
+    cosSim = numerator / denominator
+    print(cosSim)
+    return cosSim

@@ -14,6 +14,7 @@ from read_index import getTermID
 from read_index import getDocID
 from read_index import getTermFromID
 from read_index import checkForItem
+from read_index import cosSim
 
 term_key_list = get_term_key()
 term_val_list = get_term_val()
@@ -72,7 +73,10 @@ for query in queryDict:
                 dWeights.append(1)
                 qWeights.append(0)
         cosSim = cosSim(qWeights, dWeights)
-        cosSimDict[query].append(cosSim)
+        if (cosSim in cosSimDict):
+            cosSimDict[query].append(cosSim)
+        else:
+            cosSimDict[query] = [cosSim]
         # print(len(viewList))
     print(qWeights)
     print(dWeights)
