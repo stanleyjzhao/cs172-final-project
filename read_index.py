@@ -133,5 +133,5 @@ def cosSim(qWeights, dWeights):
     denominator = denominator1 * denominator2
     denominator = sqrt(denominator)
     cosSim = numerator / denominator
-    print(cosSim)
+    # print(cosSim)
     return cosSim

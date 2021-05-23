@@ -48,7 +48,7 @@ for line in lines:
     word_list = [i for i in word_list if i not in stopwords] # Source of this line: https://www.techiedelight.com/remove-all-occurrences-item-list-python/
     queryDict[word_list[0]] = word_list[1:]
 
-queryDict = {85: ["document", "will", "discuss", "allegations", "or", "measures", "being", "taken", "against", "corrupt", "public", "officials"]}
+# queryDict = {85: ["document", "will", "discuss", "allegations", "or", "measures", "being", "taken", "against", "corrupt", "public", "officials"]}
 for query in queryDict:
     # print(doc_key_list)
     # print(queryDict[query])
@@ -72,15 +72,17 @@ for query in queryDict:
                 viewList.append(word)
                 dWeights.append(1)
                 qWeights.append(0)
-        cosSim = cosSim(qWeights, dWeights)
-        if (cosSim in cosSimDict):
-            cosSimDict[query].append(cosSim)
+        intcosSim = cosSim(qWeights, dWeights)
+        if (query in cosSimDict):
+            cosSimDict[query].append(intcosSim)
         else:
-            cosSimDict[query] = [cosSim]
+            cosSimDict[query] = [intcosSim]
         # print(len(viewList))
-    print(qWeights)
-    print(dWeights)
-    print(len(qWeights))
+    # print(qWeights)
+    # print(dWeights)
+    # print(len(qWeights))
     # print(len(qWeights))
     # print(len(dWeights))
     # exit
+# print(len(cosSimDict["77"]))
+print(cosSimDict)
