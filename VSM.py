@@ -30,6 +30,14 @@ termInfo = get_termInfo()
 queryDict = {}
 cosSimDict = {}
 
+queryfile = ""
+outputfile = ""
+
+if not(len(sys.argv) == 3): 
+    raise ValueError("Please run with two file names in the format 'python3 VSM.py query_list.txt output_file.txt'")
+queryfile = sys.argv[1]
+outputfile = sys.argv[2]
+
 stop_file = open("stopwords.txt", "r")
 temp_stopwords = stop_file.readlines()
 stopwords = []
@@ -37,8 +45,7 @@ for word in temp_stopwords:
     stopwords.append(word.replace("\n", ""))
 stop_file.close()
 
-
-query_list = open('query_list.txt', 'r') # FIXME update this to accept command line filename
+query_list = open(queryfile, 'r')
 lines = query_list.readlines()
 # Populates queryDict where key = query number and val = each word of query 
 for line in lines:
@@ -48,15 +55,12 @@ for line in lines:
     word_list = [i for i in word_list if i not in stopwords] # Source of this line: https://www.techiedelight.com/remove-all-occurrences-item-list-python/
     queryDict[word_list[0]] = word_list[1:]
 
-# queryDict = {85: ["document", "will", "discuss", "allegations", "or", "measures", "being", "taken", "against", "corrupt", "public", "officials"]}
+# queryDict = {85: ["document", "will", "discuss", "allegations", "or", "measures", "being", "taken", "against", "corrupt", "public", "officials"]} FIXME REMOVE JUST FOR TESTING
 for query in queryDict:
-    # print(doc_key_list)
-    # print(queryDict[query])
     for docNum in doc_key_list:
         viewList = []
         qWeights = []
         dWeights = []
-        # print(docNum)
         for word in queryDict[query]:
             if word not in viewList:
                 viewList.append(word)
@@ -66,7 +70,6 @@ for query in queryDict:
                 else:
                     dWeights.append(0)
         for entry in map:
-            # print(entry[0])
             word = getTermFromID(entry[0])
             if word not in viewList:
                 viewList.append(word)
@@ -77,12 +80,21 @@ for query in queryDict:
             cosSimDict[query].append(intcosSim)
         else:
             cosSimDict[query] = [intcosSim]
-        # print(len(viewList))
-    # print(qWeights)
-    # print(dWeights)
-    # print(len(qWeights))
-    # print(len(qWeights))
-    # print(len(dWeights))
-    # exit
-# print(len(cosSimDict["77"]))
-print(cosSimDict)
+
+fileOut = open(outputfile, "w")
+
+for entry in cosSimDict:
+    maxValues = {}
+    for i in range(10):
+        maxVal = 0
+        maxIndex = 0
+        for val in cosSimDict[entry]:
+            if val > maxVal:
+                maxVal = val
+                maxIndex = cosSimDict[entry].index(val)
+        if maxVal == 0:
+            break
+        line = str(entry) + " Q0 " + str(doc_val_list[doc_key_list.index(maxIndex + 1)]) + " " + str(i) + " " + str(maxVal) + " Exp\n"
+        fileOut.write(line)
+        cosSimDict[entry].remove(maxVal)
+fileOut.close()

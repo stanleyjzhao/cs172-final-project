@@ -37,7 +37,7 @@ for file in allfiles:
         
 
         
-        for document in result[0:]:
+        for document in result[0:20]:
             # Retrieve contents of DOCNO tag
             docno = re.findall(docno_regex, document)[0].replace("<DOCNO>", "").replace("</DOCNO>", "").strip()
             # print(docno)
