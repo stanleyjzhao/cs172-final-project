@@ -69,12 +69,15 @@ for query in queryDict:
                     dWeights.append(1)
                 else:
                     dWeights.append(0)
-        for entry in map:
-            word = getTermFromID(entry[0])
-            if word not in viewList:
-                viewList.append(word)
-                dWeights.append(1)
-                qWeights.append(0)
+        if docNum in map.keys(): #remove this if broken
+            for entry in map[docNum]:
+                # print(entry)
+                # if entry[1] == docNum:
+                word = getTermFromID(entry[0])
+                if word not in viewList:
+                    viewList.append(word)
+                    dWeights.append(1)
+                    qWeights.append(0)
         intcosSim = cosSim(qWeights, dWeights)
         if (query in cosSimDict):
             cosSimDict[query].append(intcosSim)
@@ -94,7 +97,7 @@ for entry in cosSimDict:
                 maxIndex = cosSimDict[entry].index(val)
         if maxVal == 0:
             break
-        line = str(entry) + " Q0 " + str(doc_val_list[doc_key_list.index(maxIndex + 1)]) + " " + str(i) + " " + str(maxVal) + " Exp\n"
+        line = str(entry) + " Q0 " + str(doc_val_list[doc_key_list.index(maxIndex + 1)]) + " " + str(i + 1) + " " + str(maxVal) + " Exp\n"
         fileOut.write(line)
         cosSimDict[entry].remove(maxVal)
 fileOut.close()

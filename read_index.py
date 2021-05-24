@@ -111,27 +111,37 @@ def getTermFromID(termID):
     return term_key_list[termID - 1]
 
 def checkForItem(docID, termID):
-    for item in map:
-        # print(item[0])
-        # if item[1] > docID:
-        #     return False
-        if item[1] == docID:
-            # print("found matching doc")
+    keys = map.keys()
+    if docID in keys:
+        for item in map[docID]:
+            # print(item)
             if item[0] == termID:
-                # print("returning true")
                 return True
     return False
+    # for item in map:
+    #     # print(item[0])
+    #     # if item[1] > docID:
+    #     #     return False
+    #     if item[1] == docID:
+    #         # print("found matching doc")
+    #         if item[0] == termID:
+    #             # print("returning true")
+    #             return True
+    # return False
 
 def cosSim(qWeights, dWeights):
     numerator = 0
     denominator1 = 0
     denominator2 = 0
     for i in range(len(qWeights)):
-        numerator += qWeights[i] * dWeights[i]
-        denominator1 += (qWeights[i] ** 2)
-        denominator2 += (dWeights[i] ** 2)
+        numerator += (qWeights[i] * dWeights[i])
+        denominator1 += (qWeights[i])
+        denominator2 += (dWeights[i])
     denominator = denominator1 * denominator2
     denominator = sqrt(denominator)
-    cosSim = numerator / denominator
+    if denominator != 0:
+        cosSim = numerator / denominator
+    else:
+        cosSim = 0
     # print(cosSim)
     return cosSim
