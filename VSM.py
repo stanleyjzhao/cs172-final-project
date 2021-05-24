@@ -55,7 +55,6 @@ for line in lines:
     word_list = [i for i in word_list if i not in stopwords] # Source of this line: https://www.techiedelight.com/remove-all-occurrences-item-list-python/
     queryDict[word_list[0]] = word_list[1:]
 
-# queryDict = {85: ["document", "will", "discuss", "allegations", "or", "measures", "being", "taken", "against", "corrupt", "public", "officials"]} FIXME REMOVE JUST FOR TESTING
 for query in queryDict:
     for docNum in doc_key_list:
         viewList = []
@@ -69,10 +68,8 @@ for query in queryDict:
                     dWeights.append(1)
                 else:
                     dWeights.append(0)
-        if docNum in map.keys(): #remove this if broken
+        if docNum in map.keys():
             for entry in map[docNum]:
-                # print(entry)
-                # if entry[1] == docNum:
                 word = getTermFromID(entry[0])
                 if word not in viewList:
                     viewList.append(word)

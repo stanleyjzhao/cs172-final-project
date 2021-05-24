@@ -40,9 +40,6 @@ for file in allfiles:
         for document in result[0:]:
             # Retrieve contents of DOCNO tag
             docno = re.findall(docno_regex, document)[0].replace("<DOCNO>", "").replace("</DOCNO>", "").strip()
-            # print(docno)
-            # if (docno != "AP890101-0001"): # FIXME FOR TESTING ONLY
-            #     continue
             # Retrieve contents of TEXT tag
             text = "".join(re.findall(text_regex, document))\
                       .replace("<TEXT>", "").replace("</TEXT>", "")\
@@ -58,7 +55,6 @@ for file in allfiles:
                 for word in text:
                     if word == term:
                         text.remove(word)
-            # print(text)
 
             # step 2 - create tokens 
             #Add document ID and name to docIndexMap
@@ -80,36 +76,8 @@ for file in allfiles:
                     map[docIndexCount].append(newEntry)
                 else:
                     map[docIndexCount] = [newEntry]
-                # map.append(newEntry)
-
-                # keyval = map[0][0]
-                # print(termIndexMap[keyval])
 
             docIndexCount += 1 
-
-            # print(map)
-
-# creates termInfo dict, which stores tempDict entries containing docID, freq, and posting list
-# key_list = list(termIndexMap.keys())
-# val_list = list(termIndexMap.values())
-# for key in key_list:
-#     termInfo[key] = []
-#     tempDict = {}
-#     totalFrequency = 0
-#     numDocs = 0
-#     for entry in map:
-#         if entry[0] == key:
-#             totalFrequency += 1
-#             if entry[1] not in tempDict:
-#                 numDocs += 1
-#                 tempDict[entry[1]] = [1, [entry[2]]]
-#             else:
-#                 frequency = tempDict[entry[1]][0] + 1
-#                 tempDict[entry[1]][0] = frequency
-#                 tempDict[entry[1]][1].append(entry[2])
-#     newEntry = [totalFrequency, numDocs, tempDict]
-#     termInfo[key].append(newEntry)
-# print(termInfo[3]) # For testing, to observe output for a single term
 
 main_key_list = list(termInfo.keys())
 main_val_list = list(termInfo.values())
