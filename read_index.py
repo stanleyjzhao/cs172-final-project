@@ -36,7 +36,7 @@ def getDocID(document):
             return doc_key_list[doc_val_list.index(document)]
 
 def getTermFromID(termID):
-    return term_key_list[termID - 1]
+    return term_val_list[termID - 1]
 
 def checkForItem(docID, termID):
     keys = map.keys()
@@ -55,8 +55,7 @@ def cosSim(qWeights, dWeights):
         numerator += (qWeights[i] * dWeights[i])
         denominator1 += (qWeights[i])
         denominator2 += (dWeights[i])
-    denominator = denominator1 * denominator2
-    denominator = sqrt(denominator)
+    denominator = sqrt(denominator1 * denominator2)
     if denominator != 0:
         cosSim = numerator / denominator
     else:
