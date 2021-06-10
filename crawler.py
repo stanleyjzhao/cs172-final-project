@@ -1,8 +1,10 @@
 import requests    
 import re
 from urllib.parse import urlparse    
+import urllib.request
+from bs4 import BeautifulSoup
 
-class PyCrawler(object):    
+class PyCrawler(object):     
     def __init__(self, starting_url):    
         self.starting_url = starting_url    
         self.visited = set()    
@@ -32,7 +34,7 @@ class PyCrawler(object):
         meta = re.findall("<meta .*?name=[\"'](.*?)['\"].*?content=[\"'](.*?)['\"].*?>", html)    
         return dict(meta)    
 
-    def crawl(self, url):    
+    def crawl(self, url): 
         for link in self.get_links(url):    
             if link in self.visited:    
                 continue    
@@ -44,7 +46,17 @@ class PyCrawler(object):
             Keywords: {info.get('keywords')}    
             """)    
 
-            self.crawl(link)    
+            html_doc = urllib.request.urlopen(url).read()
+            soup = BeautifulSoup(html_doc, 'html.parser')
+            # print(soup.prettify()) #this will print raw html
+            title = soup.find('title')
+            print(title.string)
+
+            file = open("htmls/" + str(title.string) + ".txt", "a")
+            file.write(soup.get_text())
+            file.close(); 
+
+            self.crawl(link)
 
     def start(self):    
         self.crawl(self.starting_url)    
