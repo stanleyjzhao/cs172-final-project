@@ -64,7 +64,9 @@ if __name__ == "__main__":
     # clear out htmls folder from last run      
     files = glob.glob('htmls/*')
     for f in files:
-        # print(f)
-        os.remove(f)                     
-    crawler = PyCrawler("https://www.ucr.edu/")        
-    crawler.start()
+        os.remove(f)
+    seedFile = open("seedFile.txt", "r")
+    lines = seedFile.readlines()
+    for line in lines:
+        crawler = PyCrawler(line)
+        crawler.start() 
