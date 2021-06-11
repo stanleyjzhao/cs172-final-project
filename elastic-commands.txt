@@ -61,3 +61,29 @@ curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-wes
 
 DELETE ENTIRE INDEX (will need to create a new index again after this):
 curl -X DELETE -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index"
+
+
+list all indexes
+
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/_cat/indices?v"
+
+
+search
+
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty=true"
+
+
+
+delete
+curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_delete_by_query?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": {
+      
+    }
+  }
+}
+'
+
+
+

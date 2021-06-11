@@ -16,10 +16,8 @@ read option
 while [[ [[$option != 'q']] ]]
 do
     if [[ $option == 'i' ]]; then
-        echo "Please enter name of index you wish to create:"
-        read index
-        echo "Creating ${index}..."
-        curl -X PUT -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}?pretty" -H 'Content-Type: application/json' -d'{
+        echo "Creating index called cs172index..."
+        curl -X PUT -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index?pretty" -H 'Content-Type: application/json' -d'{
         "settings": {
             "analysis": {
             "analyzer": {
@@ -43,7 +41,7 @@ do
 
         
     elif [[ $option == 'c' ]]; then
-        echo "Checking health of instance..."
+        echo "Checking health of cluster..."
         curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/_cluster/health?pretty"
         
     elif [[ $option == 's' ]]; then
