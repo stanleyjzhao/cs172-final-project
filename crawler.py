@@ -3,6 +3,8 @@ import re
 from urllib.parse import urlparse    
 import urllib.request
 from bs4 import BeautifulSoup
+import os
+import glob
 
 class PyCrawler(object):     
     def __init__(self, starting_url):    
@@ -53,7 +55,9 @@ class PyCrawler(object):
             print(title.string)
 
             file = open("htmls/" + str(title.string) + ".txt", "a")
-            file.write(soup.get_text())
+            # file.write(soup.get_text())
+            file.write(soup.prettify())
+            # file.write(str(html_doc))
             file.close(); 
 
             self.crawl(link)
@@ -61,6 +65,11 @@ class PyCrawler(object):
     def start(self):    
         self.crawl(self.starting_url)    
 
-if __name__ == "__main__":                           
+if __name__ == "__main__":
+    # clear out htmls folder from last run      
+    files = glob.glob('htmls/*')
+    for f in files:
+        # print(f)
+        os.remove(f)                     
     crawler = PyCrawler("https://www.ucr.edu/")        
     crawler.start()
