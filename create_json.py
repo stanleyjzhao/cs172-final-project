@@ -6,8 +6,11 @@ files = glob.glob('htmls/*')
 os.system("rm data.json")
 count = 1
 for f in files:
-    with open(f, "r") as html_file:
-        html = html_file.read()
+    for line in open(f, "r"):
+        html = line.rstrip().split()
+        temp = " "
+        html = temp.join(html)
+        print(html)
         x = {"index": {"_id": "" + str(count) + ""}}
         x2 = {"html": html}   
         
