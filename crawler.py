@@ -52,11 +52,13 @@ class PyCrawler(object):
             """)    
             # write html to .txt files
             html_doc = urllib.request.urlopen(url).read()
-            soup = BeautifulSoup(html_doc, 'html5lib')
-            title = soup.find('title')
+            soup = BeautifulSoup(html_doc, 'html.parser')
+            # title = soup.find('title')
             file = open("htmls/" + str(docNum) + ".txt", "a")
+            for p in soup.find_all("p"):
+                file.write(p.get_text())
             # file = open("htmls/" + str(title.string) + ".txt", "a")
-            file.write(soup.prettify())
+            # file.write(soup.prettify())
             file.close(); 
             docNum += 1
 
