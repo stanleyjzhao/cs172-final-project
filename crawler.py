@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 import os
 import glob
 
+global docNum
+
 class PyCrawler(object):     
     def __init__(self, starting_url):    
         self.starting_url = starting_url    
@@ -37,6 +39,7 @@ class PyCrawler(object):
         return dict(meta)    
 
     def crawl(self, url): 
+        global docNum
         for link in self.get_links(url):    
             if link in self.visited:    
                 continue    
@@ -51,9 +54,11 @@ class PyCrawler(object):
             html_doc = urllib.request.urlopen(url).read()
             soup = BeautifulSoup(html_doc, 'html5lib')
             title = soup.find('title')
-            file = open("htmls/" + str(title.string) + ".txt", "a")
+            file = open("htmls/" + str(docNum) + ".txt", "a")
+            # file = open("htmls/" + str(title.string) + ".txt", "a")
             file.write(soup.prettify())
             file.close(); 
+            docNum += 1
 
             self.crawl(link)
 
@@ -61,10 +66,13 @@ class PyCrawler(object):
         self.crawl(self.starting_url)    
 
 if __name__ == "__main__":
+    docNum = 0
     # clear out htmls folder from last run      
     files = glob.glob('htmls/*')
     for f in files:
-        # print(f)
-        os.remove(f)                     
-    crawler = PyCrawler("https://www.ucr.edu/")        
-    crawler.start()
+        os.remove(f)
+    seedFile = open("seedFile.txt", "r")
+    lines = seedFile.readlines()
+    for line in lines:
+        crawler = PyCrawler(line)
+        crawler.start() 
