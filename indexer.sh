@@ -60,20 +60,34 @@ do
         
     elif [[ $option == 'a' ]]; then
         echo "Retrieving all documents from ${index}..."
-        curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d'
+        curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty" -H 'Content-Type: application/json' -d'
         {
         "query": {
-            "match_all": { }
-        }
+            "match_all": {
+            }
+        },
+        
+        "_source": false
         }
         '
+        # disabled source parameter so entire document isn't printed out
+        # curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d'
+        # {
+        # "query": {
+        #     "match_all": { }
+        # },
+        # "_source": true
+        # }
+        # '
         
     elif [[ $option == 'r' ]]; then
         echo "Please enter a word you would like to retrieve by (ie. \"ucr\"): "
         read word
                                                                                                                                                                                
-        curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\" $word \"}}}"
-        
+        curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\" $word \"}}, \"_source\": false}"
+        # disabled source parameter so entire document isn't printed out
+        # curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\" $word \"}}, \"_source\": true}"
+
     elif [[ $option == 'b' ]]; then
         echo "Creating JSON file to load..."
         python3 create_json.py

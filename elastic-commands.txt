@@ -52,6 +52,7 @@ curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west
       "html": "ucr"
     }
   }
+
 }'
 
 
@@ -87,4 +88,29 @@ curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-wes
 
 
 curl –X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index"
+
+curl -X PUT "localhost:9200/my-index-000001?pretty" -H 'Content-Type: application/json' -d'
+{
+  "mappings": {
+    "_source": {
+      "enabled": false
+    }
+  }
+}
+'
+
+MATCH w/o showing entire doc
+curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "html": "ucr"
+    }
+  },
+  
+  "_source": false
+}
+'
+
+
 
