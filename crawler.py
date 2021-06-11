@@ -47,17 +47,12 @@ class PyCrawler(object):
             Description: {info.get('description')}    
             Keywords: {info.get('keywords')}    
             """)    
-
+            # write html to .txt files
             html_doc = urllib.request.urlopen(url).read()
-            soup = BeautifulSoup(html_doc, 'html.parser')
-            # print(soup.prettify()) #this will print raw html
+            soup = BeautifulSoup(html_doc, 'html5lib')
             title = soup.find('title')
-            print(title.string)
-
             file = open("htmls/" + str(title.string) + ".txt", "a")
-            # file.write(soup.get_text())
             file.write(soup.prettify())
-            # file.write(str(html_doc))
             file.close(); 
 
             self.crawl(link)

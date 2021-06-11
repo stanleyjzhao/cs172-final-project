@@ -1,0 +1,63 @@
+ELASTIC SEARCH COMMANDS
+
+(copy and paste them into the terminal)
+
+CHECK STATUS (HEALTH) OF INSTANCE:
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/_cluster/health?pretty"
+
+
+CREATE AN INDEX (don't need to do this if one is already created):
+curl -X PUT -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/pretty" -H 'Content-Type: application/json' -d'{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "htmlStripAnalyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase"],
+          "char_filter": [ "html_strip" ]
+        }
+      }
+    }
+  },"mappings": {
+      "properties": {
+        "html": {
+          "type": "text",
+          "analyzer": "htmlStripAnalyzer"
+        }
+      }
+  }
+}'
+
+
+PUT in a SINGLE DOCUMENT:
+curl -X PUT -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_doc/1" -H 'Content-Type: application/json' -d'{"html": "<td><tr>test<td </tr>"}'
+
+
+RETRIEVE ALL DOCS:
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": { }
+  }
+}
+'
+
+
+RETRIEVE DOCS with the word "ucr":
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "html": "ucr"
+    }
+  }
+}'
+
+
+BULK LOAD DOCS (html) via JSON:
+curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_bulk" -H "Content-Type: application/x-ndjson" --data-binary @data.json
+
+
+DELETE ENTIRE INDEX (will need to create a new index again after this):
+curl -X DELETE -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index"
