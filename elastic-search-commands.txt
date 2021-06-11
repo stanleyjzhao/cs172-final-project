@@ -1,0 +1,57 @@
+Useful commands for running/checking elasticsearch:
+
+CHECK IF ITS RUNNING:
+curl -XGET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/_cluster/health?pretty"
+
+
+MAKE AN INDEX:
+curl -X PUT -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index" -H 'Content-Type: application/json' -d'{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "htmlStripAnalyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": ["lowercase"],
+          "char_filter": [ "html_strip" ]
+        }
+      }
+    }
+  },"mappings": {
+      "properties": {
+        "html": {
+          "type": "text",
+          "analyzer": "htmlStripAnalyzer"
+        }
+      }
+  }
+}'
+
+PUT A (single) DOCUMENT:
+curl -X PUT -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_doc/1" -H 'Content-Type: application/json' -d'{"html": "<td><tr>test<td </tr>"}'
+
+
+BULK ADD USING JSON:
+curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_bulk" -H "Content-Type: application/x-ndjson" --data-binary @data.json
+
+
+RETRIEVE ALL DOCUMENTS:
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match_all": { }
+  }
+}
+'
+RETRIEVE ALL DOCUMENTS with the word "test:
+curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": {
+    "match": {
+      "html": "ucr"
+    }
+  }
+}'
+
+DELETE index
+curl -X DELETE -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/cs172index?pretty"
