@@ -8,7 +8,7 @@ The code is designed to crawl through the text file containing our seed URLs, an
 
 Below are the detailed steps to run the program. 
 
-1. run “python3 crawler.py”, or whatever your python compile command is. The crawler will exist automatically after 60 seconds.
+1. run “python3 crawler.py”, or whatever your python compile command is. The crawler will exit automatically after 60 seconds.
 2. run “./indexer.sh”, and then create a new index when prompted, afterwards, press “b” to bulk load the index
 3. run “python3 app.py” 
 4. navigate to localhost:5000 on your browser
