@@ -1,6 +1,8 @@
 import requests   
 import threading
 import re
+# import time
+from threading import Timer
 from urllib.parse import urlparse    
 import urllib.robotparser
 import urllib.request
@@ -80,7 +82,11 @@ class PyCrawler(object):
     def start(self):    
         self.crawl(self.starting_url)    
 
+def finish():
+    os._exit(0)
+
 if __name__ == "__main__":
+    Timer(60, finish).start()
     rp = urllib.robotparser.RobotFileParser()
     visited = set()
     docNum = 0
