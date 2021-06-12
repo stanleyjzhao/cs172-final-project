@@ -1,6 +1,8 @@
-import requests    
+import requests   
+import threading
 import re
 from urllib.parse import urlparse    
+import urllib.robotparser
 import urllib.request
 from bs4 import BeautifulSoup
 import os
@@ -10,8 +12,9 @@ global docNum
 
 class PyCrawler(object):     
     def __init__(self, starting_url):    
-        self.starting_url = starting_url    
-        self.visited = set()    
+        self.starting_url = starting_url  
+        rp.set_url(starting_url.rstrip() + "robots.txt")
+        rp.read()
 
     def get_html(self, url):    
         try:    
@@ -41,9 +44,9 @@ class PyCrawler(object):
     def crawl(self, url): 
         global docNum
         for link in self.get_links(url):    
-            if link in self.visited:    
+            if link in visited or not rp.can_fetch("*", link):
                 continue    
-            self.visited.add(link)    
+            visited.add(link)    
             info = self.extract_info(link)    
 
             print(f"""Link: {link}    
@@ -53,7 +56,6 @@ class PyCrawler(object):
             # write html to .txt files
             html_doc = urllib.request.urlopen(url).read()
             soup = BeautifulSoup(html_doc, 'html.parser')
-            # title = soup.find('title')
             file = open("htmls/" + str(docNum) + ".txt", "a")
             file.write(link)
             file.write("\n")
@@ -65,6 +67,8 @@ class PyCrawler(object):
                 file.write(text)
             # file = open("htmls/" + str(title.string) + ".txt", "a")
             # file.write(soup.prettify())
+                file.write(p.get_text())
+
             file.close(); 
             docNum += 1
 
@@ -74,13 +78,35 @@ class PyCrawler(object):
         self.crawl(self.starting_url)    
 
 if __name__ == "__main__":
+    rp = urllib.robotparser.RobotFileParser()
+    visited = set()
     docNum = 0
     # clear out htmls folder from last run      
     files = glob.glob('htmls/*')
     for f in files:
         os.remove(f)
+    # crawl every link in seedFile.txt
     seedFile = open("seedFile.txt", "r")
     lines = seedFile.readlines()
-    for line in lines:
-        crawler = PyCrawler(line)
-        crawler.start() 
+
+
+    # crawl using 3 threads
+    i = 0
+    while i < len(lines):
+        thread1 = threading.Thread(target=(PyCrawler(lines[i]).start))
+        if (lines[i + 1]):
+            thread2 = threading.Thread(target=(PyCrawler(lines[i + 1]).start))
+        else:
+            thread2 = threading.Thread(target=())
+        if (lines[i + 2]):
+            thread3 = threading.Thread(target=(PyCrawler(lines[i + 2]).start))
+        else:
+            thread3 = threading.Thread(target=())
+        
+        thread1.start()
+        thread2.start()
+        thread3.start()
+        thread1.join()  
+        thread2.join()
+        thread3.join()
+        i += 3
