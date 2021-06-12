@@ -78,9 +78,9 @@ do
         echo "Please enter a word you would like to search by (ie. \"ucr\"): "
         read word
                                                                                                                                                                                
-        curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\"Riverside\"}}}"
+        curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\"$word\"}}}"
         # when source parameter is false, entire document is not printed out
-        # curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\" $word \"}}, \"_source\": false}"
+        # curl -X GET -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_search?pretty" -H 'Content-Type: application/json' -d "{\"query\": {\"match\": {\"html\":\"$word\"}}, \"_source\": false}"
 
     elif [[ $option == 'b' ]]; then
         echo "Creating JSON file to load..."
