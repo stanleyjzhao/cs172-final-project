@@ -2,12 +2,13 @@ from flask import request, render_template
 from flask import Flask
 import subprocess
 from subprocess import check_output
-
+ 
 def call_shell():
-    subprocess.call(['bash','output.sh', my_form_input()])
+    var = "covid"
+    subprocess.call(['./output.sh', var])
     stdout = check_output(['./output.sh']).decode('utf-8')
     return stdout
- 
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -19,7 +20,7 @@ def my_form_input():
     varinput = request.form['text']
     return varinput
 
-@app.route('/',methods=['GET',])
+@app.route('/shell',methods=['GET'])
 def home():
     return '<pre>'+call_shell()+'</pre>'
  
