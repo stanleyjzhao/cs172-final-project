@@ -5,14 +5,19 @@ import json
 files = glob.glob('htmls/*')
 os.system("rm data.json")
 count = 1
+lineNum = 1
 for f in files:
-    for line in open(f, "r"):
-        html = line.rstrip().split()
-        temp = " "
-        html = temp.join(html)
-        print(html)
+    with open(f, "r") as html_file:
+        html = html_file.read()
+        # remove whitespace before placing in json:
+        html = html.rstrip()
+        html = html.lstrip()
+        html = html.strip("\n\t\r")
+        html = html.replace("\n\t\t\t", "")
+        html = html.replace("\n", " ")
+        # print(html)
         x = {"index": {"_id": "" + str(count) + ""}}
-        x2 = {"html": html}   
+        x2 = {"html": html} 
         
     with open("data.json", "a") as file:
         json.dump(x, file)
