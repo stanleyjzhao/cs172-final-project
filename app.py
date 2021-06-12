@@ -5,12 +5,13 @@ import subprocess
 from subprocess import check_output
 
 def call_shell():
-    os.system(" ./output.sh covid > test.txt")
-    # subprocess.call(['bash','output.sh', "ucr"])
-    stdout = check_output(['./output.sh']).decode('utf-8')
-    
-    return stdout
- 
+    # my_form_input('text')
+    with open("formInput.txt", "r") as f:
+        input = f.read()
+    print(input)
+    os.system(" ./output.sh {var} > test.txt".format(var = input))
+    return
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -20,7 +21,9 @@ def my_form():
 @app.route('/', methods=['POST'])
 def my_form_input():
     varinput = request.form['text']
-    print (varinput)
+    with open("formInput.txt", "w") as f:
+        f.write(varinput)
+        f.close()
     return varinput
 
 @app.route('/shell',methods=['GET',])
