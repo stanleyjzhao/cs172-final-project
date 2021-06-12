@@ -84,7 +84,7 @@ do
 
     elif [[ $option == 'b' ]]; then
         echo "Creating JSON file to load..."
-        # python3 create_json.py
+        python3 create_json.py
         echo "Bulk loading documents into ${index}..."
         curl -X POST -u elastic:9GObQ236qhyZLDb3gbccg0fx "https://cs172-b03cf7.es.us-west1.gcp.cloud.es.io:9243/${index}/_bulk" -H "Content-Type: application/x-ndjson" --data-binary @data.json
         
