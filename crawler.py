@@ -10,6 +10,9 @@ import glob
 
 global docNum
 
+os.system("chmod 744 indexer.sh")
+os.system("chmod 744 output.sh")
+
 class PyCrawler(object):     
     def __init__(self, starting_url):    
         self.starting_url = starting_url  
