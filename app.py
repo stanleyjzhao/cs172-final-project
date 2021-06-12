@@ -25,7 +25,11 @@ def my_form_input():
 
 @app.route('/shell',methods=['GET',])
 def home():
-    return '<pre>'+call_shell()+'</pre>'
+    call_shell()
+
+    with open("test.txt", "r") as f:
+      content = f.read()
+    return render_template('printed.html', content=content)
  
 app.run(debug=True)
  
