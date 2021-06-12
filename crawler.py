@@ -59,6 +59,7 @@ class PyCrawler(object):
             file = open("htmls/" + str(docNum) + ".txt", "a")
             file.write(link)
             file.write("\n")
+            
             for p in soup.find_all("p"):
                 text = str(p.get_text())
                 text = text.strip('\t')
