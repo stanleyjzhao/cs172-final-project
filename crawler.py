@@ -57,8 +57,17 @@ class PyCrawler(object):
             html_doc = urllib.request.urlopen(url).read()
             soup = BeautifulSoup(html_doc, 'html.parser')
             file = open("htmls/" + str(docNum) + ".txt", "a")
+            file.write(link)
+            file.write("\n")
             for p in soup.find_all("p"):
+                text = str(p.get_text())
+                text = text.strip('\t')
+                text = text.strip('\n')
+                file.write(text)
+            # file = open("htmls/" + str(title.string) + ".txt", "a")
+            # file.write(soup.prettify())
                 file.write(p.get_text())
+
             file.close(); 
             docNum += 1
 
